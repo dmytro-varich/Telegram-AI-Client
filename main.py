@@ -161,14 +161,14 @@ def main():
     # PM Reply Handler (with RAG)
     pm_handler = PMReplyHandler(
         agent=chat_agent,
-        monitored_users=monitored_users_ids,
-        escalation_chat_id=MODERATE_ID_CHAT,
+        # monitored_users=monitored_users_ids,
+        escalation_chat_id=MODERATE_ID_CHAT
     )
     
     # Group Moderation Handler
     group_moderation_handler = GroupModerationHandler(
         service=moderation_service,
-        monitored_groups=monitored_groups_ids,
+        # monitored_groups=monitored_groups_ids,
         send_logs_to=LOGS_ID_CHAT
     )
     
@@ -214,7 +214,7 @@ def main():
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
-        logger.info("\n" + "="*20)
+        logger.info("="*20)
         logger.info("Stopping all clients...")
         manager.stop_all()
         logger.info("✅ Program terminated.")

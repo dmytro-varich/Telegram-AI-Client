@@ -213,6 +213,45 @@ class TDLibClient(BaseTelegramClient):
         except Exception as e:
             logger.exception("Exception while registering router: %s", str(e))
     
+    # --- Additional Methods ---
+    def mark_read(self, chat_peer: str | int) -> bool:
+        """
+        Mark all messages in a chat as read.
+        
+        Args:
+            chat_peer: Chat identifier (username or numeric ID).
+            
+        Returns:
+            bool: True if successful, False otherwise.
+        """ 
+        if not self.client:
+            logger.error("Cannot mark read: TDLib client is not initialized")
+            return False
+        
+        chat_id = self._resolve_peer(chat_peer)
+        if chat_id is None:
+            logger.error("Failed to resolve peer for marking read: %s", chat_peer)
+            return False
+        
+        try:
+            result = self.client.call_method('viewMessages', {
+                'chat_id': chat_id,
+                'message_ids': []  # Empty list marks all as read
+            })
+            result.wait()
+            
+            if result.error:
+                logger.error("Error marking messages as read in chat %s: %s", 
+                           chat_peer, result.error_info)
+                return False
+            
+            logger.info("Marked messages as read in chat %s", chat_peer)
+            return True
+        except Exception as e:
+            logger.exception("Exception while marking messages as read in chat %s: %s", 
+                             chat_peer, str(e))
+            return False
+        
     # --- Private Helper Methods (TDLib-specific) ---
         
     def _resolve_peer(self, peer: str | int) -> Optional[int]:

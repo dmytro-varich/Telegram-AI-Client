@@ -35,7 +35,7 @@ def main():
     moderation_service = ModerationService(model=openai_moderation_model)
     
     # 3. Create handlers
-    group_moderation_handler = GroupModerationHandler(moderation_service, send_logs_to='3390583919')
+    group_moderation_handler = GroupModerationHandler(moderation_service, )
     
     # 2. Router
     router = EventRouter()

@@ -29,7 +29,7 @@ class GroupModerationHandler(BaseHandler):
             send_warnings: Whether to send warnings to users on violations
         """
         self.moderation_service = service or ModerationService()
-        self.monitored_groups = monitored_groups or set()
+        self.monitored_groups = monitored_groups
         self.send_logs_to = send_logs_to
         self.send_warnings = send_warnings
 
@@ -51,6 +51,9 @@ class GroupModerationHandler(BaseHandler):
                 
         # Check if group is in monitored list (if specified)
         if self.monitored_groups is not None and abs(event.chat_id) not in self.monitored_groups:
+            return False
+        
+        if self.send_logs_to and abs(self.send_logs_to) == abs(event.chat_id):
             return False
         
         return True

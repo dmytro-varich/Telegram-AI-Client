@@ -187,3 +187,17 @@ class BaseTelegramClient(ABC):
             None
         """
         pass
+    
+    # --- Additional Methods ---
+    
+    @abstractmethod
+    def mark_read(self, chat_peer: str | int) -> bool:
+        """
+        Mark all messages in a chat as read.
+        
+        Args:
+            chat_peer: Chat identifier (username or numeric ID).
+            
+        Returns:
+            bool: True if successful, False otherwise.
+        """ 

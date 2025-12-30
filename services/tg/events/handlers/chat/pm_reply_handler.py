@@ -66,11 +66,11 @@ class PMReplyHandler(BaseHandler):
         )
         
         try:
+            # Mark message as read
+            event.client.mark_read(event.chat_id)
+            
             # Generate response using agent (agent handles RAG, history, etc.)
-            response = self.agent.generate_response(
-                user_message=event.text,
-                user_id=event.sender_id
-            )
+            response = self.agent.generate_response(event=event)
             
             # Check if escalation needed
             if response.should_escalate:
